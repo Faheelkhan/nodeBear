@@ -12,6 +12,8 @@ app.use(morgan('dev')); // log requests to the console
 
 // configure body parser
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(__dirname + '/public'));
+app.use(bodyParser.json());
 app.use(bodyParser.json());
 
 var port     = process.env.PORT || 8080; // set our port
@@ -49,12 +51,16 @@ router.route('/bears')
 		
 		var bear = new Bear();		// create a new instance of the Bear model
 		bear.name = req.body.name;  // set the bears name (comes from the request)
+		bear.age = req.body.age;
 
 		bear.save(function(err) {
 			if (err)
 				res.send(err);
 
-			res.json({ message: 'Bear created!' });
+			res.json({ message: 'Bear created!',
+						bearName : bear.name,
+						age : bear.age
+					});
 		});
 
 		
@@ -103,9 +109,7 @@ router.route('/bears/:bear_id')
 
 	// delete the bear with this id
 	.delete(function(req, res) {
-		Bear.remove({
-			_id: req.params.bear_id
-		}, function(err, bear) {
+		Bear.remove({_id: req.params.bear_id}, function(err, bear) {
 			if (err)
 				res.send(err);
 
