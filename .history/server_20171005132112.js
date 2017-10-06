@@ -7,13 +7,11 @@ var bodyParser = require('body-parser');
 var app = express();
 var morgan = require('morgan');
 
-// // configure app
-// app.use(morgan('dev')); // log requests to the console
+// configure app
+app.use(morgan('dev')); // log requests to the console
 
 // configure body parser
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// tell bodyParser to convert req to JSON
 app.use(bodyParser.json());
 
 var port = process.env.PORT || 8080; // set our port
@@ -48,6 +46,7 @@ router.route('/bears')
 
 // create a bear (accessed at POST http://localhost:8080/bears)
 .post(function(req, res) {
+
     var bear = new Bear(); // create a new instance of the Bear model
     bear.name = req.body.name; // set the bears name (comes from the request)
     bear.save(function(err) {
@@ -64,6 +63,7 @@ router.route('/bears')
     Bear.find(function(err, bears) {
         if (err)
             res.send(err);
+
         res.json(bears);
     });
 });
@@ -80,130 +80,6 @@ router.route('/bears/:bear_id')
         res.json(bear);
     });
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // update the bear with this id
 .put(function(req, res) {
